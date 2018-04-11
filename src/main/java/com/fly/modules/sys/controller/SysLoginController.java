@@ -60,7 +60,7 @@ public class SysLoginController {
         if (!validateResult){
             return Rr.error(ResultCodeConstants.CAPTCHA_WRONG);
         }
-        SysUserEntity userEntity = userService.queryByUserName(loginForm.getUsername());
+        SysUserEntity userEntity = userService.queryByUsername(loginForm.getUsername());
         //账号与密码
         if (userEntity == null || !userEntity.getPassword()
                 .equals(new Sha256Hash(loginForm.getPassword(),userEntity.getSalt()).toHex()) ){

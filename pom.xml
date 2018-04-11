@@ -32,7 +32,6 @@
 		<commons.codec.version>1.10</commons.codec.version>
 		<commons.configuration.version>1.10</commons.configuration.version>
 		<joda.time.version>2.9.9</joda.time.version>
-
 		<!--验证码-->
 		<kaptcha.version>0.0.9</kaptcha.version>
 		<!--swagger-->

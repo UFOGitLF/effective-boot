@@ -1,10 +1,12 @@
 package com.fly.modules.sys.repostitory;
 
 import com.fly.modules.sys.entity.SysUserEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -16,10 +18,10 @@ import java.util.List;
 public interface SysUserRepository extends JpaRepository<SysUserEntity,Long>,JpaSpecificationExecutor<SysUserEntity>{
     /**
      * 根据用户名查询用户
-     * @param userName
+     * @param username
      * @return
      */
-    SysUserEntity findByUserName(String userName);
+    SysUserEntity findByUsername(String username);
 
     /**
      * 根据userId查询

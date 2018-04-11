@@ -1,6 +1,7 @@
 package com.fly.modules.sys.entity;
 
 import lombok.Data;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -20,7 +21,8 @@ public class SysLogEntity implements Serializable {
 	/**
 	 * 用户名
 	 */
-	private String username;
+	@Column(name = "user_name")
+	private String userName;
 	/**
 	 * 用户操作
 	 */
