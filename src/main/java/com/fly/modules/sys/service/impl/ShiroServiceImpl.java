@@ -37,7 +37,7 @@ public class ShiroServiceImpl implements ShiroService{
                 permsList.add(menu.getPerms());
             }
         }else{
-            permsList = userRepository.queryPermsByUserId(userId);
+            permsList = userRepository.findPermsByUserId(userId);
         }
         //用户权限列表
         Set<String> permsSet = new HashSet<>();

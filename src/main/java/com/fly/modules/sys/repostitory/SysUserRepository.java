@@ -6,7 +6,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -29,12 +31,17 @@ public interface SysUserRepository extends JpaRepository<SysUserEntity,Long>,Jpa
      * @return
      */
     SysUserEntity findByUserId(Long userId);
+
     /**
      * 根据用户Id查询用户权限
      * @param userId
      * @return
      */
-    List<String> queryPermsByUserId(Long userId);
+    @Query(value = "SELECT t3.perms FROM sys_user_role t1 " +
+            "LEFT JOIN sys_role_menu t2 ON t1.role_id = t2.role_id " +
+            "LEFT JOIN sys_menu t3 ON t2.menu_id = t3.menu_id " +
+            "WHERE t1.user_id = :userId",nativeQuery = true)
+    List<String> findPermsByUserId(@Param(value = "userId") Long userId);
 
     /**
      * 根据用户Id查询所有的菜单ID
@@ -42,4 +49,14 @@ public interface SysUserRepository extends JpaRepository<SysUserEntity,Long>,Jpa
      * @return
      */
     List<Long> findMenuIdsByUserId(Long userId);
+
+    /**
+     * 根据userId修改密码
+     * @param newPassword
+     * @param userId
+     * @return
+     */
+    @Modifying
+    @Query(value = "UPDATE sys_user SET password = :newPassword where user_id = :userId",nativeQuery = true)
+    Integer updatePassword(@Param(value = "newPassword") String newPassword,@Param(value = "userId") Long userId);
 }

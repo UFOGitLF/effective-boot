@@ -1,15 +1,13 @@
 package com.fly.modules.sys.controller;
 
-import com.fly.common.utils.Constant;
-import com.fly.common.utils.PageData;
-import com.fly.common.utils.PageInfo;
-import com.fly.common.utils.Rr;
+import com.fly.common.utils.*;
+import com.fly.common.validator.AbstractAssert;
+import com.fly.modules.sys.form.PasswordForm;
 import com.fly.modules.sys.service.SysUserService;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.apache.shiro.crypto.hash.Sha256Hash;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -44,6 +42,27 @@ public class SysUserController extends AbstractController{
         }
         PageData page = userService.queryPage(pageInfo,username,createUserId);
         return Rr.ok().put("page",page);
+    }
+
+    /**
+     * 修改密码
+     * @param form
+     * @return
+     */
+    @PostMapping("password")
+    public Rr password(@RequestBody PasswordForm form){
+        AbstractAssert.isBlank(form.getNewPassword(),"新密码不能为空");
+        //原密码
+        String password = new Sha256Hash(form.getPassword(),getUser().getSalt()).toHex();
+        //新密码
+        String newPassword = new Sha256Hash(form.getNewPassword(),getUser().getSalt()).toHex();
+        //更新密码
+        boolean flag = userService.updatePassword(getUserId(),password,newPassword);
+
+        if (!flag){
+            return Rr.error(ResultCodeConstants.OLD_PASSWORD_WRONG);
+        }
+        return Rr.ok();
     }
 
 }

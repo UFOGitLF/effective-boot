@@ -5,6 +5,7 @@ import com.fly.common.utils.PageInfo;
 import com.fly.modules.sys.entity.SysUserEntity;
 import com.fly.modules.sys.repostitory.SysUserRepository;
 import com.fly.modules.sys.service.SysUserService;
+import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,8 +18,8 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.transaction.Transactional;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -59,5 +60,16 @@ public class SysUserServiceImpl implements SysUserService{
         }, PageRequest.of(pageInfo.getPageNo()-1,pageInfo.getPageSize()));
 
         return new PageData(userPage);
+    }
+
+    @Override
+    @Transactional(rollbackOn = Exception.class)
+    public boolean updatePassword(Long userId, String password, String newPassword) {
+        SysUserEntity userEntity = userRepository.findByUserId(userId);
+        if (null == userEntity && !StringUtils.equals(userEntity.getPassword(),password)){
+            return false;
+        }
+        Integer result = userRepository.updatePassword(newPassword,userId);
+        return result == 0?false:true;
     }
 }

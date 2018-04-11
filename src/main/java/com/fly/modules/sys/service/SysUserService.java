@@ -32,4 +32,13 @@ public interface SysUserService {
      * @return
      */
     PageData queryPage(PageInfo pageInfo,String username,Long createUserId);
+
+    /**
+     * 修改密码
+     * @param userId 用户ID
+     * @param password 原始密码
+     * @param newPassword 新密码
+     * @return
+     */
+    boolean updatePassword(Long userId, String password, String newPassword);
 }

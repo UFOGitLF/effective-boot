@@ -17,4 +17,18 @@ public interface SysMenuRepository extends JpaRepository<SysMenuEntity,Long>{
      * @return
      */
     List<SysMenuEntity> findAllByParentIdOrderByOrderNumAsc(Long parentId);
+
+    /**
+     * 根据ID查询
+     * @param id
+     * @return
+     */
+    SysMenuEntity findByMenuId(Long id);
+
+    /**
+     * 查询不是按钮的菜单列表
+     * @param type
+     * @return
+     */
+    List<SysMenuEntity> findByTypeNot(Integer type);
 }

@@ -4,6 +4,7 @@ import com.fly.common.utils.Constant;
 import com.fly.modules.sys.entity.SysMenuEntity;
 import com.fly.modules.sys.repostitory.SysMenuRepository;
 import com.fly.modules.sys.service.SysMenuService;
+import com.fly.modules.sys.service.SysRoleMenuService;
 import com.fly.modules.sys.service.SysUserService;
 import org.springframework.stereotype.Service;
 
@@ -20,9 +21,11 @@ public class SysMenuServiceImpl implements SysMenuService{
     private SysUserService userService;
     @Resource
     private SysMenuRepository menuRepository;
+    @Resource
+    private SysRoleMenuService roleMenuService;
 
     @Override
-    public List<SysMenuEntity> findUserMenuListByUserId(Long userId) {
+    public List<SysMenuEntity> queryUserMenuListByUserId(Long userId) {
         //admin用户
         if (userId == Constant.SUPER_ADMIN){
             return getAllMenuList(null);
@@ -33,13 +36,13 @@ public class SysMenuServiceImpl implements SysMenuService{
     }
 
     @Override
-    public List<SysMenuEntity> findListByParentId(Long parentId) {
+    public List<SysMenuEntity> queryListByParentId(Long parentId) {
         return menuRepository.findAllByParentIdOrderByOrderNumAsc(parentId);
     }
 
     @Override
-    public List<SysMenuEntity> findListByParentId(Long parentId, List<Long> menuIdList) {
-        List<SysMenuEntity> menuList = findListByParentId(parentId);
+    public List<SysMenuEntity> queryListByParentId(Long parentId, List<Long> menuIdList) {
+        List<SysMenuEntity> menuList = queryListByParentId(parentId);
         if (menuIdList == null){
             return menuList;
         }
@@ -52,6 +55,35 @@ public class SysMenuServiceImpl implements SysMenuService{
         return userMenuList;
     }
 
+    @Override
+    public List<SysMenuEntity> queryAll() {
+        return menuRepository.findAll();
+    }
+
+    @Override
+    public SysMenuEntity queryByMenuId(Long menuId) {
+        return menuRepository.findByMenuId(menuId);
+    }
+
+    @Override
+    public void insert(SysMenuEntity menuEntity) {
+        menuRepository.save(menuEntity);
+    }
+
+    @Override
+    public List<SysMenuEntity> queryNotButtonList() {
+        //type=2为按钮
+        return menuRepository.findByTypeNot(2);
+    }
+
+    @Override
+    public void delete(Long menuId) {
+        //删除菜单
+        menuRepository.deleteById(menuId);
+        //删除角色与菜单关联
+        roleMenuService.deleteRoleMenuByMenuId(menuId);
+    }
+
     /**
      * 查询所有菜单列表
      * @param menuIdList
@@ -59,7 +91,7 @@ public class SysMenuServiceImpl implements SysMenuService{
      */
     private List<SysMenuEntity> getAllMenuList(List<Long> menuIdList) {
         //查询根菜单列表
-        List<SysMenuEntity> menuList = findListByParentId(0L, menuIdList);
+        List<SysMenuEntity> menuList = queryListByParentId(0L, menuIdList);
         //递归获取子菜单
         getMenuTreeList(menuList, menuIdList);
         return menuList;
@@ -76,7 +108,7 @@ public class SysMenuServiceImpl implements SysMenuService{
         for (SysMenuEntity menuEntity : menuList){
             //目录
             if (menuEntity.getType() == Constant.MenuType.CATALOG.getValue()){
-                menuEntity.setList(getMenuTreeList(findListByParentId(menuEntity.getMenuId(), menuIdList), menuIdList));
+                menuEntity.setList(getMenuTreeList(queryListByParentId(menuEntity.getMenuId(), menuIdList), menuIdList));
             }
             subMenuList.add(menuEntity);
         }
