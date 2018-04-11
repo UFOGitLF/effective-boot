@@ -1,2 +1,2 @@
 # effective-boot
-springboot模板项目
+spring-boot模板项目
