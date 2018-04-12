@@ -59,4 +59,12 @@ public interface SysUserRepository extends JpaRepository<SysUserEntity,Long>,Jpa
     @Modifying
     @Query(value = "UPDATE sys_user SET password = :newPassword where user_id = :userId",nativeQuery = true)
     Integer updatePassword(@Param(value = "newPassword") String newPassword,@Param(value = "userId") Long userId);
+
+    /**
+     * ID批量删除
+     * @param ids
+     */
+    @Modifying
+    @Query(value = "DELETE FROM sys_user WHERE user_id IN :ids",nativeQuery = true)
+    void deleteAllByIds(@Param(value = "ids") Long[] ids);
 }

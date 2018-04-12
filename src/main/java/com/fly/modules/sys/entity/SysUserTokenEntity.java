@@ -1,6 +1,7 @@
 package com.fly.modules.sys.entity;
 
 import lombok.Data;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -16,7 +17,6 @@ public class SysUserTokenEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "user_id")
 	private Long userId;
 	/**
@@ -32,5 +32,6 @@ public class SysUserTokenEntity implements Serializable {
 	 * 更新时间
 	 */
 	@Column(name = "update_time")
+	@UpdateTimestamp
 	private Date updateTime;
 }

@@ -2,6 +2,9 @@ package com.fly.modules.sys.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -14,6 +17,7 @@ import java.util.List;
  */
 @Table(name = "sys_role")
 @Entity
+@Data
 public class SysRoleEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
@@ -49,5 +53,6 @@ public class SysRoleEntity implements Serializable {
 	 * 创建时间
 	 */
 	@Column(name = "create_time")
+	@CreationTimestamp
 	private Date createTime;
 }

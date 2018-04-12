@@ -4,6 +4,8 @@ package com.fly.modules.sys.entity;
 import com.fly.common.validator.group.AddGroup;
 import com.fly.common.validator.group.UpdateGroup;
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -79,5 +81,7 @@ public class SysUserEntity implements Serializable {
 	 * 创建时间
 	 */
 	@Column(name = "create_time")
+	@Temporal(TemporalType.DATE)
+	@CreationTimestamp
 	private Date createTime;
 }

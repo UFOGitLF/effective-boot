@@ -1,6 +1,8 @@
 package com.fly.modules.sys.entity;
 
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 import javax.persistence.*;
@@ -47,5 +49,6 @@ public class SysLogEntity implements Serializable {
 	 * 创建时间
 	 */
 	@Column(name = "create_date")
+	@CreationTimestamp
 	private Date createDate;
 }

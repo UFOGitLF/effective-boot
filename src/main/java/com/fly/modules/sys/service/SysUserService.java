@@ -41,4 +41,23 @@ public interface SysUserService {
      * @return
      */
     boolean updatePassword(Long userId, String password, String newPassword);
+
+    /**
+     * 新增用户
+     * @param userEntity
+     */
+    void insert(SysUserEntity userEntity);
+
+    /**
+     * 根据ID查询详情
+     * @param userId
+     * @return
+     */
+    SysUserEntity selectById(Long userId);
+
+    /**
+     * 批量删除用户
+     * @param ids
+     */
+    void deleteBatch(Long[] ids);
 }

@@ -12,4 +12,10 @@ public interface SysUserTokenService {
      * @return
      */
     Rr createToken(Long userId);
+
+    /**
+     * 退出登录
+     * @param userId
+     */
+    void logout(Long userId);
 }

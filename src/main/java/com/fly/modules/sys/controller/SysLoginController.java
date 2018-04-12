@@ -28,7 +28,7 @@ import java.util.Map;
  * @Author : liufei on 2018/4/8
  */
 @RestController
-public class SysLoginController {
+public class SysLoginController extends AbstractController{
     @Resource
     private SysCaptchaService captchaService;
     @Resource
@@ -73,5 +73,15 @@ public class SysLoginController {
         Rr rr = tokenService.createToken(userEntity.getUserId());
 
         return rr;
+    }
+
+    /**
+     * 退出登录
+     * @return
+     */
+    @PostMapping("sys/logout")
+    public Rr logout(){
+        tokenService.logout(getUserId());
+        return Rr.ok();
     }
 }

@@ -33,4 +33,12 @@ public class ResultCodeConstants {
      * 原始密码不正确
      */
     public static final int OLD_PASSWORD_WRONG = 5007;
+    /**
+     * 系统管理员不能删除
+     */
+    public static final int USER_ADMIN_NOT_DELETE = 5008;
+    /**
+     * 当前用户不能删除
+     */
+    public static final int CURRENT_USER_NOT_DELETE = 5009;
 }

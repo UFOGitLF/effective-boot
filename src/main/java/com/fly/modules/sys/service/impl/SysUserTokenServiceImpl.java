@@ -8,6 +8,7 @@ import com.fly.modules.sys.service.SysUserTokenService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.transaction.Transactional;
 import java.util.Date;
 
 /**
@@ -48,5 +49,13 @@ public class SysUserTokenServiceImpl implements SysUserTokenService{
         tokenRepository.save(tokenEntity);
         Rr rr = Rr.ok().put("token",token).put("expire",expireDate);
         return rr;
+    }
+
+    @Override
+    @Transactional(rollbackOn = Exception.class)
+    public void logout(Long userId) {
+        String token = TokenGenerator.generateValue();
+        //修改token
+        tokenRepository.updateToken(token,userId);
     }
 }

@@ -2,14 +2,20 @@ package com.fly.modules.sys.controller;
 
 import com.fly.common.utils.*;
 import com.fly.common.validator.AbstractAssert;
+import com.fly.common.validator.ValidatorUtils;
+import com.fly.common.validator.group.AddGroup;
+import com.fly.modules.sys.entity.SysUserEntity;
 import com.fly.modules.sys.form.PasswordForm;
+import com.fly.modules.sys.service.SysUserRoleService;
 import com.fly.modules.sys.service.SysUserService;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @Author : liufei on 2018/4/9
@@ -19,6 +25,9 @@ import javax.annotation.Resource;
 public class SysUserController extends AbstractController{
     @Resource
     private SysUserService userService;
+    @Resource
+    private SysUserRoleService userRoleService;
+
     /**
      * 登录的用户信息
      */
@@ -27,6 +36,19 @@ public class SysUserController extends AbstractController{
         return Rr.ok().put("user", getUser());
     }
 
+    /**
+     * 用户详情
+     * @param userId
+     * @return
+     */
+    @GetMapping("/info/{userId}")
+    public Rr info(@PathVariable(value = "userId") Long userId){
+        SysUserEntity user = userService.selectById(userId);
+
+        List<Long> roleIdList = userRoleService.queryRoleIdListByUserId(userId);
+        user.setRoleIdList(roleIdList);
+        return Rr.ok().put("user",user);
+    }
     /**
      * 用户列表
      * @return
@@ -65,4 +87,31 @@ public class SysUserController extends AbstractController{
         return Rr.ok();
     }
 
+    /**
+     * 用户新增
+     * @param userEntity
+     * @return
+     */
+    @PostMapping("save")
+    @RequiresPermissions("sys:user:save")
+    public Rr save(@RequestBody SysUserEntity userEntity){
+        ValidatorUtils.validateEntity(userEntity, AddGroup.class);
+        userEntity.setCreateUserId(getUserId());
+        userService.insert(userEntity);
+        return Rr.ok();
+    }
+
+    @PostMapping("delete")
+    @RequiresPermissions("sys:user:delete")
+    public Rr delete(@RequestBody Long[] ids){
+        if (ArrayUtils.contains(ids,1L)){
+            return Rr.error(ResultCodeConstants.USER_ADMIN_NOT_DELETE);
+        }
+        if (ArrayUtils.contains(ids,getUserId())){
+            return Rr.error(ResultCodeConstants.CURRENT_USER_NOT_DELETE);
+        }
+
+        userService.deleteBatch(ids);
+        return Rr.ok();
+    }
 }
