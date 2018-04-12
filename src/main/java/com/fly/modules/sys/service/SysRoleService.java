@@ -1,6 +1,9 @@
 package com.fly.modules.sys.service;
 
+import com.fly.common.utils.PageData;
+import com.fly.common.utils.PageInfo;
 import com.fly.modules.sys.entity.SysRoleEntity;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -14,7 +17,7 @@ public interface SysRoleService {
      * @param role
      * @return
      */
-    List<SysRoleEntity> selectRolesByCondition(SysRoleEntity role);
+    Page<SysRoleEntity> selectRolesByCondition(SysRoleEntity role, PageInfo pageInfo);
 
     /**
      * 根据创建者ID查询角色列表
@@ -22,4 +25,10 @@ public interface SysRoleService {
      * @return
      */
     List<Long> selectRolesByCreateUserId(Long createUserId);
+
+    /**
+     * 角色新增
+     * @param role
+     */
+    void insert(SysRoleEntity role);
 }

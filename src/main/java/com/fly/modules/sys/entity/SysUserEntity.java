@@ -1,6 +1,8 @@
 package com.fly.modules.sys.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fly.common.utils.Constant;
 import com.fly.common.validator.group.AddGroup;
 import com.fly.common.validator.group.UpdateGroup;
 import lombok.Data;
@@ -10,6 +12,7 @@ import org.springframework.data.annotation.CreatedDate;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -29,6 +32,7 @@ public class SysUserEntity implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "user_id")
+	@NotNull(message = "用户ID不能我i空",groups = UpdateGroup.class)
 	private Long userId;
 
 	/**
@@ -81,7 +85,8 @@ public class SysUserEntity implements Serializable {
 	 * 创建时间
 	 */
 	@Column(name = "create_time")
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	@CreationTimestamp
+	@JsonFormat(pattern = Constant.DATE_SHORT)
 	private Date createTime;
 }

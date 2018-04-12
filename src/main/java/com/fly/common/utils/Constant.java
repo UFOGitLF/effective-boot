@@ -28,6 +28,9 @@ public class Constant {
 
     public static final int DEFAULT_CONNECTION_TIMEOUT = 5000;
 
+    public static final String DATE_TIMESTAMP = "yyyy-MM-dd HH:mm:ss";
+
+    public static final String DATE_SHORT = "yyyy-MM-dd";
 
 
     /**

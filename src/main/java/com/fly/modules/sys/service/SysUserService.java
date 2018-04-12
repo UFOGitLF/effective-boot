@@ -60,4 +60,10 @@ public interface SysUserService {
      * @param ids
      */
     void deleteBatch(Long[] ids);
+
+    /**
+     * 修改用户
+     * @param user
+     */
+    void update(SysUserEntity user);
 }

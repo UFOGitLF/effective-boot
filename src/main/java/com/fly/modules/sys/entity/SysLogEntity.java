@@ -1,5 +1,7 @@
 package com.fly.modules.sys.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fly.common.utils.Constant;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.annotation.CreatedDate;
@@ -49,6 +51,8 @@ public class SysLogEntity implements Serializable {
 	 * 创建时间
 	 */
 	@Column(name = "create_date")
+	@Temporal(TemporalType.TIMESTAMP)
 	@CreationTimestamp
+	@JsonFormat(pattern = Constant.DATE_TIMESTAMP)
 	private Date createDate;
 }

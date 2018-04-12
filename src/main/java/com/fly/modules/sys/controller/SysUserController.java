@@ -4,6 +4,7 @@ import com.fly.common.utils.*;
 import com.fly.common.validator.AbstractAssert;
 import com.fly.common.validator.ValidatorUtils;
 import com.fly.common.validator.group.AddGroup;
+import com.fly.common.validator.group.UpdateGroup;
 import com.fly.modules.sys.entity.SysUserEntity;
 import com.fly.modules.sys.form.PasswordForm;
 import com.fly.modules.sys.service.SysUserRoleService;
@@ -57,15 +58,27 @@ public class SysUserController extends AbstractController{
     @ApiOperation("获取所有用户列表")
     @RequiresPermissions("sys:user:list")
     public Rr list(String username,
-                   Long createUserId,
                    PageInfo pageInfo){
+        Long createUserId = null;
         if (getUserId() != Constant.SUPER_ADMIN){
             createUserId = getUserId();
         }
         PageData page = userService.queryPage(pageInfo,username,createUserId);
         return Rr.ok().put("page",page);
     }
-
+    /**
+     * 用户新增
+     * @param userEntity
+     * @return
+     */
+    @PostMapping("save")
+    @RequiresPermissions("sys:user:save")
+    public Rr save(@RequestBody SysUserEntity userEntity){
+        ValidatorUtils.validateEntity(userEntity, AddGroup.class);
+        userEntity.setCreateUserId(getUserId());
+        userService.insert(userEntity);
+        return Rr.ok();
+    }
     /**
      * 修改密码
      * @param form
@@ -86,21 +99,21 @@ public class SysUserController extends AbstractController{
         }
         return Rr.ok();
     }
-
-    /**
-     * 用户新增
-     * @param userEntity
-     * @return
-     */
-    @PostMapping("save")
-    @RequiresPermissions("sys:user:save")
-    public Rr save(@RequestBody SysUserEntity userEntity){
-        ValidatorUtils.validateEntity(userEntity, AddGroup.class);
-        userEntity.setCreateUserId(getUserId());
-        userService.insert(userEntity);
+    @PostMapping("update")
+    @RequiresPermissions("sys:user:update")
+    public Rr update(@RequestBody SysUserEntity user){
+        ValidatorUtils.validateEntity(user, UpdateGroup.class);
+        user.setCreateUserId(getUserId());
+        SysUserEntity source = userService.selectById(user.getUserId());
+        UpdateUtils.copyNullProperties(source,user);
+        userService.update(user);
         return Rr.ok();
     }
-
+    /**
+     * 删除用户
+     * @param ids
+     * @return
+     */
     @PostMapping("delete")
     @RequiresPermissions("sys:user:delete")
     public Rr delete(@RequestBody Long[] ids){
@@ -110,7 +123,6 @@ public class SysUserController extends AbstractController{
         if (ArrayUtils.contains(ids,getUserId())){
             return Rr.error(ResultCodeConstants.CURRENT_USER_NOT_DELETE);
         }
-
         userService.deleteBatch(ids);
         return Rr.ok();
     }

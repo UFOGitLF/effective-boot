@@ -1,7 +1,9 @@
 package com.fly.modules.sys.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fly.common.utils.Constant;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.annotation.CreatedDate;
@@ -54,5 +56,7 @@ public class SysRoleEntity implements Serializable {
 	 */
 	@Column(name = "create_time")
 	@CreationTimestamp
+	@Temporal(TemporalType.TIMESTAMP)
+	@JsonFormat(pattern = Constant.DATE_SHORT)
 	private Date createTime;
 }

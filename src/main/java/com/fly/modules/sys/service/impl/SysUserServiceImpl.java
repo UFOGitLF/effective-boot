@@ -67,7 +67,7 @@ public class SysUserServiceImpl implements SysUserService{
 
                 return criteriaBuilder.and(list.toArray(predicates));
             }
-        }, PageRequest.of(pageInfo.getPageNo()-1,pageInfo.getPageSize()));
+        }, PageRequest.of(pageInfo.getPage()-1,pageInfo.getLimit()));
 
         return new PageData(userPage);
     }
@@ -106,6 +106,11 @@ public class SysUserServiceImpl implements SysUserService{
     @Transactional(rollbackOn = Exception.class)
     public void deleteBatch(Long[] ids) {
         userRepository.deleteAllByIds(ids);
+    }
+
+    @Override
+    public void update(SysUserEntity user) {
+        userRepository.save(user);
     }
 
     private void checkRole(SysUserEntity userEntity) {
