@@ -38,9 +38,9 @@ public interface SysUserRepository extends JpaRepository<SysUserEntity,Long>,Jpa
      * @return
      */
     @Query(value = "SELECT t3.perms FROM sys_user_role t1 " +
-            "LEFT JOIN sys_role_menu t2 ON t1.role_id = t2.role_id " +
-            "LEFT JOIN sys_menu t3 ON t2.menu_id = t3.menu_id " +
-            "WHERE t1.user_id = :userId",nativeQuery = true)
+                   "LEFT JOIN sys_role_menu t2 ON t1.role_id = t2.role_id " +
+                   "LEFT JOIN sys_menu t3 ON t2.menu_id = t3.menu_id " +
+                   "WHERE t1.user_id = :userId",nativeQuery = true)
     List<String> findPermsByUserId(@Param(value = "userId") Long userId);
 
     /**
