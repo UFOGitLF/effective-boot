@@ -52,4 +52,15 @@ public class SysRoleMenuServiceImpl implements SysRoleMenuService{
         }
         return longs;
     }
+
+    @Override
+    public void deleteRoleMenuByRoleId(Long[] ids) {
+        List<SysRoleMenuEntity> entities = new ArrayList<>();
+        for (Long roleId : ids) {
+            SysRoleMenuEntity roleMenuEntity = new SysRoleMenuEntity();
+            roleMenuEntity.setRoleId(roleId);
+            entities.add(roleMenuEntity);
+        }
+        roleMenuRepository.deleteAll(entities);
+    }
 }

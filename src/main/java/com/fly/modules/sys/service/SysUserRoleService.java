@@ -20,4 +20,10 @@ public interface SysUserRoleService {
      * @return
      */
     List<Long> queryRoleIdListByUserId(Long userId);
+
+    /**
+     * 根据roleIds删除关联关系
+     * @param ids
+     */
+    void deleteUserRoleByRoleId(Long[] ids);
 }

@@ -3,6 +3,7 @@ package com.fly.modules.sys.repostitory;
 import com.fly.modules.sys.entity.SysRoleEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -23,4 +24,12 @@ public interface SysRoleRepository extends JpaRepository<SysRoleEntity,Long>,Jpa
      */
     @Query(value = "SELECT t.role_id FROM sys_role t where create_user_id = :createUserId",nativeQuery = true)
     List<Long> findRoleIdsByCreateUserId(@Param(value = "createUserId") Long createUserId);
+
+    /**
+     * 批量删除
+     * @param roleIds
+     */
+    @Modifying
+    @Query(value = "DELETE FROM sys_role WHERE role_id IN :roleIds")
+    void deleteBatch(Long[] roleIds);
 }

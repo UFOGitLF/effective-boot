@@ -97,8 +97,16 @@ public class SysRoleController extends AbstractController{
     @PostMapping("update")
     @RequiresPermissions("sys:role:update")
     public Rr update(@RequestBody SysRoleEntity role){
+        ValidatorUtils.validateEntity(role);
+        role.setCreateUserId(getUserId());
+        roleService.update(role);
+        return Rr.ok();
+    }
 
-
+    @PostMapping("delete")
+    @RequiresPermissions("sys:role:delete")
+    public Rr delete(@RequestBody Long[] ids){
+        roleService.deleteBatch(ids);
         return Rr.ok();
     }
 }

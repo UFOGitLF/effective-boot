@@ -31,4 +31,16 @@ public interface SysRoleService {
      * @param role
      */
     void insert(SysRoleEntity role);
+
+    /**
+     * 更新角色
+     * @param role
+     */
+    void update(SysRoleEntity role);
+
+    /**
+     * 删除角色
+     * @param ids
+     */
+    void deleteBatch(Long[] ids);
 }

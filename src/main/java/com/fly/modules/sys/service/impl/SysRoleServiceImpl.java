@@ -7,6 +7,7 @@ import com.fly.modules.sys.entity.SysRoleEntity;
 import com.fly.modules.sys.repostitory.SysRoleRepository;
 import com.fly.modules.sys.service.SysRoleMenuService;
 import com.fly.modules.sys.service.SysRoleService;
+import com.fly.modules.sys.service.SysUserRoleService;
 import com.fly.modules.sys.service.SysUserService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.data.domain.Page;
@@ -14,7 +15,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -36,6 +36,8 @@ public class SysRoleServiceImpl implements SysRoleService{
     private SysRoleMenuService roleMenuService;
     @Resource
     private SysUserService userService;
+    @Resource
+    private SysUserRoleService userRoleService;
 
     @Override
     public Page<SysRoleEntity> selectRolesByCondition(SysRoleEntity role,PageInfo pageInfo) {
@@ -73,6 +75,27 @@ public class SysRoleServiceImpl implements SysRoleService{
         checkPerms(role);
         //保存角色与菜单关系
         roleMenuService.saveOrUpdate(role.getMenuIdList(),role.getRoleId());
+    }
+
+    @Override
+    @Transactional(rollbackOn = Exception.class)
+    public void update(SysRoleEntity role) {
+        roleRepository.save(role);
+        //检查是否越权
+        checkPerms(role);
+        //更新角色与菜单关系
+        roleMenuService.saveOrUpdate(role.getMenuIdList(),role.getRoleId());
+    }
+
+    @Override
+    public void deleteBatch(Long[] ids) {
+        //删除角色
+        roleRepository.deleteBatch(ids);
+        //删除角色与菜单关联关系
+        roleMenuService.deleteRoleMenuByRoleId(ids);
+        //删除角色与用户关联关系
+        userRoleService.deleteUserRoleByRoleId(ids);
+
     }
 
     private void checkPerms(SysRoleEntity role) {

@@ -44,4 +44,9 @@ public class SysUserRoleServiceImpl implements SysUserRoleService{
     public List<Long> queryRoleIdListByUserId(Long userId) {
         return userRoleRepository.findRoleIdsByUserId(userId);
     }
+
+    @Override
+    public void deleteUserRoleByRoleId(Long[] ids) {
+        userRoleRepository.deleteAllByRoleId(ids);
+    }
 }

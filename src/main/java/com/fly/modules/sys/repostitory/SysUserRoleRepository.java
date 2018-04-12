@@ -25,6 +25,14 @@ public interface SysUserRoleRepository extends JpaRepository<SysUserRoleEntity,L
     void deleteAllByUserId(@Param(value = "userId") Long userId);
 
     /**
+     * 根据RoleId批量删除
+     * @param roleId
+     */
+    @Modifying
+    @Query(value = "DELETE FROM sys_user_role WHERE role_id = :roleId",nativeQuery = true)
+    void deleteAllByRoleId(@Param(value = "roleId") Long roleId);
+
+    /**
      * 根据userId查询roleIDs
      * @param userId
      * @return
