@@ -8,6 +8,7 @@ import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import javax.transaction.Transactional;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,11 +43,27 @@ public class SysUserRoleServiceImpl implements SysUserRoleService{
 
     @Override
     public List<Long> queryRoleIdListByUserId(Long userId) {
-        return userRoleRepository.findRoleIdsByUserId(userId);
+        List<BigInteger> list = userRoleRepository.findRoleIdsByUserId(userId);
+        List<Long> longs = new ArrayList<>();
+        for (BigInteger bigInteger : list) {
+            longs.add(bigInteger.longValue());
+        }
+        return longs;
     }
 
     @Override
-    public void deleteUserRoleByRoleId(Long[] ids) {
-        userRoleRepository.deleteAllByRoleId(ids);
+    @Transactional(rollbackOn = Exception.class)
+    public void deleteUserRoleByRoleIds(Long[] roleIds) {
+        userRoleRepository.deleteUserRoleByRoleIds(roleIds);
+    }
+
+    @Override
+    public List<Long> findMenuIdsByUserId(Long userId) {
+        List<BigInteger> list = userRoleRepository.findMenuIdsByUserId(userId);
+        List<Long> longs = new ArrayList<>();
+        for (BigInteger bigInteger : list) {
+            longs.add(bigInteger.longValue());
+        }
+        return longs;
     }
 }

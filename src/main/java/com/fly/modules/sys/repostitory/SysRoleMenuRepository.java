@@ -34,4 +34,12 @@ public interface SysRoleMenuRepository extends JpaRepository<SysRoleMenuEntity,L
      */
     @Query(value = "SELECT t.menu_id FROM sys_role_menu t WHERE role_id = :roleId",nativeQuery = true)
     List<BigInteger> findMenuIdsByRoleId(@Param(value = "roleId") Long roleId);
+
+    /**
+     * 根据roleIds删除关联关系
+     * @param roleIds
+     */
+    @Modifying
+    @Query(value = "DELETE FROM sys_role_menu WHERE role_id IN :roleIds",nativeQuery = true)
+    void deleteRoleMenuByRoleIds(@Param(value = "roleIds") Long[] roleIds);
 }

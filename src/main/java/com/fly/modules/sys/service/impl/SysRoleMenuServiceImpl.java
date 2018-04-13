@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
+import javax.transaction.Transactional;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,13 +55,8 @@ public class SysRoleMenuServiceImpl implements SysRoleMenuService{
     }
 
     @Override
-    public void deleteRoleMenuByRoleId(Long[] ids) {
-        List<SysRoleMenuEntity> entities = new ArrayList<>();
-        for (Long roleId : ids) {
-            SysRoleMenuEntity roleMenuEntity = new SysRoleMenuEntity();
-            roleMenuEntity.setRoleId(roleId);
-            entities.add(roleMenuEntity);
-        }
-        roleMenuRepository.deleteAll(entities);
+    @Transactional(rollbackOn = Exception.class)
+    public void deleteRoleMenuByRoleIds(Long[] roleIds) {
+        roleMenuRepository.deleteRoleMenuByRoleIds(roleIds);
     }
 }

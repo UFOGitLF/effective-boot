@@ -4,10 +4,12 @@ import com.fly.common.exception.RrException;
 import com.fly.common.utils.Constant;
 import com.fly.common.utils.PageData;
 import com.fly.common.utils.PageInfo;
+import com.fly.common.utils.UpdateUtils;
 import com.fly.modules.sys.entity.SysRoleEntity;
 import com.fly.modules.sys.entity.SysUserEntity;
 import com.fly.modules.sys.repostitory.SysUserRepository;
 import com.fly.modules.sys.service.SysRoleService;
+import com.fly.modules.sys.service.SysUserRoleService;
 import com.fly.modules.sys.service.SysUserService;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.RandomStringUtils;
@@ -39,6 +41,8 @@ public class SysUserServiceImpl implements SysUserService{
     private SysUserRepository userRepository;
     @Resource
     private SysRoleService roleService;
+    @Resource
+    private SysUserRoleService userRoleService;
 
     @Override
     public SysUserEntity queryByUsername(String username) {
@@ -47,7 +51,7 @@ public class SysUserServiceImpl implements SysUserService{
 
     @Override
     public List<Long> queryAllMenuId(Long userId) {
-        return userRepository.findMenuIdsByUserId(userId);
+        return userRoleService.findMenuIdsByUserId(userId);
     }
 
     @Override
@@ -92,9 +96,7 @@ public class SysUserServiceImpl implements SysUserService{
         userEntity.setPassword(new Sha256Hash(userEntity.getPassword(),salt).toHex());
         userRepository.save(userEntity);
         checkRole(userEntity);
-
-        //TODO 保存用户与角色关系
-
+        userRoleService.saveOrUpdate(userEntity.getUserId(),userEntity.getRoleIdList());
     }
 
     @Override
@@ -110,7 +112,20 @@ public class SysUserServiceImpl implements SysUserService{
 
     @Override
     public void update(SysUserEntity user) {
+        if(StringUtils.isBlank(user.getPassword())){
+            user.setPassword(null);
+        }else{
+            user.setPassword(new Sha256Hash(user.getPassword(), user.getSalt()).toHex());
+        }
+        SysUserEntity source = userRepository.findByUserId(user.getUserId());
+        UpdateUtils.copyNullProperties(source,user);
         userRepository.save(user);
+
+        //检查角色是否越权
+        checkRole(user);
+
+        //保存用户与角色关系
+        userRoleService.saveOrUpdate(user.getUserId(), user.getRoleIdList());
     }
 
     private void checkRole(SysUserEntity userEntity) {

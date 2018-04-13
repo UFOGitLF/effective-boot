@@ -47,9 +47,9 @@ public class SysMenuServiceImpl implements SysMenuService{
             return menuList;
         }
         List<SysMenuEntity> userMenuList = new ArrayList<>();
-        for (SysMenuEntity menuEntity: menuList){
-            if (menuIdList.contains(menuEntity.getMenuId())){
-                userMenuList.add(menuEntity);
+        for (SysMenuEntity menu: menuList){
+            if (menuIdList.contains(menu.getMenuId())){
+                userMenuList.add(menu);
             }
         }
         return userMenuList;
@@ -82,6 +82,11 @@ public class SysMenuServiceImpl implements SysMenuService{
         menuRepository.deleteById(menuId);
         //删除角色与菜单关联
         roleMenuService.deleteRoleMenuByMenuId(menuId);
+    }
+
+    @Override
+    public void updateById(SysMenuEntity menu) {
+        menuRepository.save(menu);
     }
 
     /**

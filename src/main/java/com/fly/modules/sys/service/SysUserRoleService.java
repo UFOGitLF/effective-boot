@@ -25,5 +25,12 @@ public interface SysUserRoleService {
      * 根据roleIds删除关联关系
      * @param ids
      */
-    void deleteUserRoleByRoleId(Long[] ids);
+    void deleteUserRoleByRoleIds(Long[] ids);
+
+    /**
+     * 根据userId查询所有的菜单IDs
+     * @param userId
+     * @return
+     */
+    List<Long> findMenuIdsByUserId(Long userId);
 }

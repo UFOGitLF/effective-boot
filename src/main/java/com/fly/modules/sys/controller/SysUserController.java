@@ -11,6 +11,7 @@ import com.fly.modules.sys.service.SysUserRoleService;
 import com.fly.modules.sys.service.SysUserService;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.springframework.web.bind.annotation.*;
@@ -104,8 +105,6 @@ public class SysUserController extends AbstractController{
     public Rr update(@RequestBody SysUserEntity user){
         ValidatorUtils.validateEntity(user, UpdateGroup.class);
         user.setCreateUserId(getUserId());
-        SysUserEntity source = userService.selectById(user.getUserId());
-        UpdateUtils.copyNullProperties(source,user);
         userService.update(user);
         return Rr.ok();
     }

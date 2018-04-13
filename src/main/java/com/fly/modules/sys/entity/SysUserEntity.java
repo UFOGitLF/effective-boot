@@ -84,7 +84,7 @@ public class SysUserEntity implements Serializable {
 	/**
 	 * 创建时间
 	 */
-	@Column(name = "create_time")
+	@Column(name = "create_time",updatable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	@CreationTimestamp
 	@JsonFormat(pattern = Constant.DATE_SHORT)

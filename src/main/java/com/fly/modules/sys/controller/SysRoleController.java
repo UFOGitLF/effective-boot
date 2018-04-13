@@ -103,6 +103,11 @@ public class SysRoleController extends AbstractController{
         return Rr.ok();
     }
 
+    /**
+     * 角色删除
+     * @param ids
+     * @return
+     */
     @PostMapping("delete")
     @RequiresPermissions("sys:role:delete")
     public Rr delete(@RequestBody Long[] ids){

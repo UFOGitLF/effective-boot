@@ -60,4 +60,10 @@ public interface SysMenuService {
      * @param menuId
      */
     void delete(Long menuId);
+
+    /**
+     * 修改菜单
+     * @param menu
+     */
+    void updateById(SysMenuEntity menu);
 }

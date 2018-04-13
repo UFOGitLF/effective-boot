@@ -88,16 +88,20 @@ public class SysRoleServiceImpl implements SysRoleService{
     }
 
     @Override
-    public void deleteBatch(Long[] ids) {
-        //删除角色
-        roleRepository.deleteBatch(ids);
+    @Transactional(rollbackOn = Exception.class)
+    public void deleteBatch(Long[] roleIds) {
+        roleRepository.deleteAllByRoleIds(roleIds);
         //删除角色与菜单关联关系
-        roleMenuService.deleteRoleMenuByRoleId(ids);
+        roleMenuService.deleteRoleMenuByRoleIds(roleIds);
         //删除角色与用户关联关系
-        userRoleService.deleteUserRoleByRoleId(ids);
+        userRoleService.deleteUserRoleByRoleIds(roleIds);
 
     }
 
+    /**
+     * 检查是否越权
+     * @param role
+     */
     private void checkPerms(SysRoleEntity role) {
         if (role.getCreateUserId() == Constant.SUPER_ADMIN){
             return;

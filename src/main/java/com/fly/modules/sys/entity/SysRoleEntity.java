@@ -54,7 +54,7 @@ public class SysRoleEntity implements Serializable {
 	/**
 	 * 创建时间
 	 */
-	@Column(name = "create_time")
+	@Column(name = "create_time",updatable = false)
 	@CreationTimestamp
 	@Temporal(TemporalType.TIMESTAMP)
 	@JsonFormat(pattern = Constant.DATE_SHORT)

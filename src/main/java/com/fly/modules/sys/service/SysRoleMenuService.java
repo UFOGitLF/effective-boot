@@ -30,5 +30,5 @@ public interface SysRoleMenuService {
      * 根据roleIds批量删除角色菜单关联关系
      * @param ids
      */
-    void deleteRoleMenuByRoleId(Long[] ids);
+    void deleteRoleMenuByRoleIds(Long[] ids);
 }

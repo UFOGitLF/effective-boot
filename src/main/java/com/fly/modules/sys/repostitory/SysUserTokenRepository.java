@@ -18,12 +18,10 @@ public interface SysUserTokenRepository extends JpaRepository<SysUserTokenEntity
      * @return
      */
     SysUserTokenEntity findByUserId(Long userId);
-
     /**
      * 根据token查询
      */
     SysUserTokenEntity findByToken(String token);
-
     /**
      * 修改token
      * @param token

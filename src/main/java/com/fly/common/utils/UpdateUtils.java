@@ -22,7 +22,7 @@ public class UpdateUtils {
         Set<String> noEmptyName = new HashSet<>();
         for (PropertyDescriptor p : pds) {
             Object value = srcBean.getPropertyValue(p.getName());
-            if (value != null && !"".equals(value)) {
+            if (value != null) {
                 noEmptyName.add(p.getName());
             }
         }

@@ -44,13 +44,6 @@ public interface SysUserRepository extends JpaRepository<SysUserEntity,Long>,Jpa
     List<String> findPermsByUserId(@Param(value = "userId") Long userId);
 
     /**
-     * 根据用户Id查询所有的菜单ID
-     * @param userId
-     * @return
-     */
-    List<Long> findMenuIdsByUserId(Long userId);
-
-    /**
      * 根据userId修改密码
      * @param newPassword
      * @param userId

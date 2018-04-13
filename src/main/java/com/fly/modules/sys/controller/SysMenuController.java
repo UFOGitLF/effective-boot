@@ -100,6 +100,27 @@ public class SysMenuController extends AbstractController{
         return Rr.ok().put("menu",menu);
     }
 
+    /**
+     * 菜单修改
+     * @param menu
+     * @return
+     */
+    @PostMapping("update")
+    @RequiresPermissions("sys:menu:update")
+    public Rr info(@RequestBody SysMenuEntity menu){
+        //数据校验
+        verifyForm(menu);
+
+        menuService.updateById(menu);
+
+        return Rr.ok();
+    }
+
+    /**
+     * 菜单删除
+     * @param menuId
+     * @return
+     */
     @PostMapping("delete/{menuId}")
     @RequiresPermissions("sys:menu:delete")
     public Rr delete(@PathVariable(name = "menuId") Long menuId){

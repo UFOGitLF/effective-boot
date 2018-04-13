@@ -16,7 +16,6 @@ import java.util.List;
 @Repository
 public interface SysRoleRepository extends JpaRepository<SysRoleEntity,Long>,JpaSpecificationExecutor<SysRoleEntity>{
 
-
     /**
      * 根据创建者ID查询List<roleId></>
      * @param createUserId
@@ -26,10 +25,10 @@ public interface SysRoleRepository extends JpaRepository<SysRoleEntity,Long>,Jpa
     List<Long> findRoleIdsByCreateUserId(@Param(value = "createUserId") Long createUserId);
 
     /**
-     * 批量删除
+     * 根据角色IDs删除角色
      * @param roleIds
      */
     @Modifying
-    @Query(value = "DELETE FROM sys_role WHERE role_id IN :roleIds")
-    void deleteBatch(Long[] roleIds);
+    @Query(value = "DELETE FROM sys_role WHERE role_Id IN :roleIds",nativeQuery = true)
+    void deleteAllByRoleIds(@Param(value = "roleIds") Long[] roleIds);
 }
