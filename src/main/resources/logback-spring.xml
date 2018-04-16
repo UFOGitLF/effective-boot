@@ -2,17 +2,21 @@
 <configuration>
 
     <include resource="org/springframework/boot/logging/logback/base.xml"/>
-    <logger name="org.springframework.web" level="INFO"/>
-    <logger name="org.springboot.sample" level="TRACE"/>
+
+    <!--<appender name="LOGSTASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">-->
+        <!--<destination>192.168.62.138:6666</destination>-->
+        <!--<encoder charset="UTF-8" class="net.logstash.logback.encoder.LogstashEncoder" />-->
+    <!--</appender>-->
 
     <!-- 开发、测试环境 -->
     <springProfile name="dev,test">
         <logger name="org.springframework.web" level="INFO"/>
         <logger name="org.springboot.sample" level="INFO"/>
         <logger name="com.fly" level="DEBUG"/>
+        <!--<logger name="LOGSTASH" level="DEBUG"/>-->
     </springProfile>
 
-    <!-- 生产环境 -->
+    <!-- 生产环境 ERROR级别-->
     <springProfile name="prod">
         <logger name="org.springframework.web" level="ERROR"/>
         <logger name="org.springboot.sample" level="ERROR"/>
