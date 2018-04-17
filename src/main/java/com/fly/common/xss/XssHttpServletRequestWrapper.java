@@ -32,6 +32,11 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
         orgRequest = request;
     }
 
+    /**
+     * 拿到没被包装的request
+     * @param request
+     * @return
+     */
     public static HttpServletRequest getOrgRequest(HttpServletRequest request) {
         if (request instanceof XssHttpServletRequestWrapper) {
             return ((XssHttpServletRequestWrapper) request).getOrgRequest();

@@ -7,6 +7,7 @@ import java.util.Set;
 
 /**
  * 权限
+ * @author liufei
  */
 public interface ShiroService {
     /**

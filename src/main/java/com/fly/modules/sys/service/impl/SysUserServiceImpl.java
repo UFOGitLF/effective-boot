@@ -80,7 +80,7 @@ public class SysUserServiceImpl implements SysUserService{
     @Transactional(rollbackOn = Exception.class)
     public boolean updatePassword(Long userId, String password, String newPassword) {
         SysUserEntity userEntity = userRepository.findByUserId(userId);
-        if (null == userEntity && !StringUtils.equals(userEntity.getPassword(),password)){
+        if (null == userEntity || !StringUtils.equals(userEntity.getPassword(),password)){
             return false;
         }
         Integer result = userRepository.updatePassword(newPassword,userId);

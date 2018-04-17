@@ -25,4 +25,15 @@ public class SysCaptchaEntity {
      */
     @Column(name = "expire_time")
     private Date expireTime;
+
+    public Date getExpireTime() {
+        return (Date)expireTime.clone();
+    }
+
+    public void setExpireTime(Date expireTime) {
+        if (expireTime != null){
+            this.expireTime = (Date)expireTime.clone();
+        }
+
+    }
 }

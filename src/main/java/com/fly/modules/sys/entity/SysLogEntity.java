@@ -55,4 +55,17 @@ public class SysLogEntity implements Serializable {
 	@CreationTimestamp
 	@JsonFormat(pattern = Constant.DATE_TIMESTAMP)
 	private Date createDate;
+
+	public Date getCreateDate() {
+		if (createDate != null){
+			return (Date)createDate.clone();
+		}
+		return null;
+	}
+
+	public void setCreateDate(Date createDate) {
+		if (createDate != null){
+			this.createDate = (Date)createDate.clone();
+		}
+	}
 }

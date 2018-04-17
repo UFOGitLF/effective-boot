@@ -18,8 +18,11 @@ public interface SysUserTokenRepository extends JpaRepository<SysUserTokenEntity
      * @return
      */
     SysUserTokenEntity findByUserId(Long userId);
+
     /**
      * 根据token查询
+     * @param token
+     * @return
      */
     SysUserTokenEntity findByToken(String token);
     /**
@@ -39,5 +42,9 @@ public interface SysUserTokenRepository extends JpaRepository<SysUserTokenEntity
     @Query(value = "DELETE FROM sys_user_token WHERE user_id = :userId",nativeQuery = true)
     void deleteByUserId(@Param(value = "userId") Long userId);
 
+    /**
+     * delete by token
+     * @param accessToken
+     */
     void deleteByToken(String accessToken);
 }
