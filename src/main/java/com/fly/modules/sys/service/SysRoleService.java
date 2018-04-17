@@ -1,6 +1,5 @@
 package com.fly.modules.sys.service;
 
-import com.fly.common.utils.PageData;
 import com.fly.common.utils.PageInfo;
 import com.fly.modules.sys.entity.SysRoleEntity;
 import org.springframework.data.domain.Page;
@@ -15,6 +14,7 @@ public interface SysRoleService {
     /**
      * 根据条件查询角色
      * @param role
+     * @param pageInfo
      * @return
      */
     Page<SysRoleEntity> selectRolesByCondition(SysRoleEntity role, PageInfo pageInfo);
