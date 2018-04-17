@@ -2,6 +2,7 @@ package com.fly.modules.sys.oauth2;
 
 import com.fly.modules.sys.entity.SysUserEntity;
 import com.fly.modules.sys.entity.SysUserTokenEntity;
+import com.fly.modules.sys.repostitory.SysUserTokenRepository;
 import com.fly.modules.sys.service.ShiroService;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -11,6 +12,7 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.util.Set;
 
 /**
@@ -22,6 +24,8 @@ public class OAuth2Realm extends AuthorizingRealm {
 
     @Autowired
     private ShiroService shiroService;
+    @Resource
+    private SysUserTokenRepository tokenRepository;
 
     @Override
     public boolean supports(AuthenticationToken token) {
@@ -55,6 +59,7 @@ public class OAuth2Realm extends AuthorizingRealm {
         SysUserTokenEntity tokenEntity = shiroService.queryByToken(accessToken);
         //token失效
         if(tokenEntity == null || tokenEntity.getExpireTime().getTime() < System.currentTimeMillis()){
+            tokenRepository.deleteByToken(accessToken);
             throw new IncorrectCredentialsException("token失效，请重新登录");
         }
 

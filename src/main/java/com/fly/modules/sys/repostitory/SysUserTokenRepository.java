@@ -30,4 +30,14 @@ public interface SysUserTokenRepository extends JpaRepository<SysUserTokenEntity
     @Modifying
     @Query(value = "UPDATE sys_user_token SET token = :token WHERE user_id = :userId",nativeQuery = true)
     void updateToken(@Param(value = "token") String token,@Param(value = "userId") Long userId);
+
+    /**
+     * 退出删除token
+     * @param userId
+     */
+    @Modifying
+    @Query(value = "DELETE FROM sys_user_token WHERE user_id = :userId",nativeQuery = true)
+    void deleteByUserId(@Param(value = "userId") Long userId);
+
+    void deleteByToken(String accessToken);
 }

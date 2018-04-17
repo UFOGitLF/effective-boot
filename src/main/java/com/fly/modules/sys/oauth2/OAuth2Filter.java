@@ -36,6 +36,13 @@ public class OAuth2Filter extends AuthenticatingFilter {
         return executeLogin(servletRequest,servletResponse);
     }
 
+    /**
+     * 验证token
+     * @param servletRequest
+     * @param servletResponse
+     * @return
+     * @throws Exception
+     */
     @Override
     protected AuthenticationToken createToken(ServletRequest servletRequest, ServletResponse servletResponse) throws Exception {
         String token = getRequestToken((HttpServletRequest) servletRequest);

@@ -54,8 +54,6 @@ public class SysUserTokenServiceImpl implements SysUserTokenService{
     @Override
     @Transactional(rollbackOn = Exception.class)
     public void logout(Long userId) {
-        String token = TokenGenerator.generateValue();
-        //修改token
-        tokenRepository.updateToken(token,userId);
+        tokenRepository.deleteByUserId(userId);
     }
 }
