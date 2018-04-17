@@ -22,6 +22,10 @@ import java.util.Set;
 @RestController
 @RequestMapping("/sys/menu")
 public class SysMenuController extends AbstractController{
+    /**
+     * 系统级别的菜单数量(不能删除)
+     */
+    private static final int SYS_MENU_SIZE = 26;
     @Resource
     private SysMenuService menuService;
     @Resource
@@ -124,7 +128,7 @@ public class SysMenuController extends AbstractController{
     @PostMapping("delete/{menuId}")
     @RequiresPermissions("sys:menu:delete")
     public Rr delete(@PathVariable(name = "menuId") Long menuId){
-        if (menuId <= 26){
+        if (menuId <= SYS_MENU_SIZE){
             return Rr.error(ResultCodeConstants.DELETE_SYSMENU_ERROR);
         }
         //判断是否有子菜单或按钮
