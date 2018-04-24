@@ -4,8 +4,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fly.common.utils.Constant;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.web.bind.annotation.CrossOrigin;
 
 import javax.persistence.*;
 import java.io.Serializable;

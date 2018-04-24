@@ -7,7 +7,6 @@ import com.fly.common.validator.group.AddGroup;
 import com.fly.common.validator.group.UpdateGroup;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
